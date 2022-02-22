@@ -21,9 +21,9 @@ class CreateNewsTable extends Migration
             $table->text('tags')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->uuid('created_by');
-            $table->uuid('updated_by');
-            $table->uuid('deleted_by');
+            $table->uuid('created_by')->nullable();
+            $table->uuid('updated_by')->nullable();
+            $table->uuid('deleted_by')->nullable();
         });
     }
 
