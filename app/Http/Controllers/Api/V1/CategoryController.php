@@ -85,13 +85,13 @@ class CategoryController extends ApiController
 
     /**
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         $category = $this->categoryRepository->findOrFail($id);
         $category->delete();
 
-        return response()->noContent(Response::HTTP_NO_CONTENT);
+        return $this->success('The category deleted successfully.', Response::HTTP_NO_CONTENT);
     }
 }

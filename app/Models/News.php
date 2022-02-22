@@ -22,6 +22,7 @@ class News extends Model
      */
     protected $fillable = [
         'category_id',
+        'user_id',
         'title',
         'body',
         'tags',
@@ -43,6 +44,14 @@ class News extends Model
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
     /**

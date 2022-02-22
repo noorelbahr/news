@@ -36,6 +36,14 @@ class Comment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function likes()
     {
         return $this->morphMany(Like::class, 'likable');

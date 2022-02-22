@@ -23,6 +23,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $models = [
             'Category',
+            'News',
             'User',
         ];
 

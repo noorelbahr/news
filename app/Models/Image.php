@@ -31,4 +31,12 @@ class Image extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * @return string
+     */
+    public function getImageUrlAttribute()
+    {
+        return url('storage/' . $this->filename);
+    }
 }
