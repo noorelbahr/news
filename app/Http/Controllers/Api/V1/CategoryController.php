@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\V1\CategorySubmitRequest;
 use App\Http\Resources\Api\V1\CategoryResource;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryController extends Controller
+class CategoryController extends ApiController
 {
     /**
      * @var CategoryRepositoryInterface
@@ -52,17 +51,36 @@ class CategoryController extends Controller
 
     /**
      * @param CategorySubmitRequest $request
-     * @return \Illuminate\Http\Response
+     * @return CategoryResource
      */
     public function store(CategorySubmitRequest $request)
     {
-        $this->categoryRepository->create(
+        $category = $this->categoryRepository->create(
             $request->name,
-            Str::slug($request->name),
+            $request->slug,
             Auth::id()
         );
 
-        return response()->noContent(Response::HTTP_CREATED);
+        return new CategoryResource($category);
+    }
+
+    /**
+     * @param CategorySubmitRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(CategorySubmitRequest $request, $id)
+    {
+        $this->categoryRepository->findOrFail($id);
+
+        $this->categoryRepository->update(
+            $id,
+            $request->name,
+            $request->slug,
+            Auth::id()
+        );
+
+        return $this->success('The category updated successfully.');
     }
 
     /**

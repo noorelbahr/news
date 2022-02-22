@@ -23,7 +23,7 @@ Route::prefix('v1')->namespace('V1')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
         // Categories
-        Route::apiResource('categories', 'CategoryController', ['except' => 'update']);
+        Route::apiResource('categories', 'CategoryController');
 
         // News
         Route::apiResource('news', 'NewsController');
