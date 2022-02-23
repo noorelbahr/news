@@ -5326,6 +5326,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5334,7 +5335,7 @@ __webpack_require__.r(__webpack_exports__);
         email: '',
         password: ''
       },
-      errors: []
+      error_msg: ''
     };
   },
   mounted: function mounted() {
@@ -5365,7 +5366,9 @@ __webpack_require__.r(__webpack_exports__);
           name: 'News'
         });
       })["catch"](function (error) {
-        console.log(error);
+        console.log(error.response);
+        _this2.error_msg = error.response.data.message;
+        _this2.form.password = '';
       });
     }
   }
@@ -47158,6 +47161,12 @@ var render = function () {
           _c("p", { staticClass: "login-box-msg" }, [
             _vm._v("Sign in to get your token"),
           ]),
+          _vm._v(" "),
+          _vm.error_msg
+            ? _c("div", { staticClass: "alert alert-danger" }, [
+                _vm._v(_vm._s(_vm.error_msg)),
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "form",

@@ -8,6 +8,7 @@
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg">Sign in to get your token</p>
+                    <div v-if="error_msg" class="alert alert-danger">{{ error_msg }}</div>
                     <form @submit.prevent="login">
                         <div class="input-group mb-3">
                             <input type="email" class="form-control" placeholder="Email" v-model="form.email">
@@ -54,7 +55,7 @@
                     email: '',
                     password: ''
                 },
-                errors: []
+                error_msg: ''
             }
         },
         mounted() {
@@ -76,7 +77,9 @@
                         this.$store.commit('setToken', response.data.data.access_token);
                         this.$router.push({ name: 'News' });
                     }).catch((error) => {
-                        console.log(error);
+                        console.log(error.response);
+                        this.error_msg = error.response.data.message;
+                        this.form.password = '';
                     });
             }
         }
