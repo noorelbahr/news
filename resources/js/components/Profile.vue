@@ -4,18 +4,13 @@
             <img src="/user.png" class="img-circle elevation-2">
         </div>
         <div class="info">
-            <a href="#" class="d-block">{{ name }}</a>
+            <a href="#" class="d-block">{{ $store.state.name }}</a>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        data() {
-            return {
-                name: this.$store.state.name,
-                errors: []
-            }
-        }
+
     }
 </script>

@@ -5575,14 +5575,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      name: this.$store.state.name,
-      errors: []
-    };
-  }
-});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
 
@@ -39958,7 +39951,7 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "info" }, [
       _c("a", { staticClass: "d-block", attrs: { href: "#" } }, [
-        _vm._v(_vm._s(_vm.name)),
+        _vm._v(_vm._s(_vm.$store.state.name)),
       ]),
     ]),
   ])
