@@ -52,9 +52,6 @@
 
 <script>
     import axios from 'axios';
-    let config = {
-        headers: { Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NWE4ZTg2Yy1kNmJkLTQ3YmQtOTg2OS1mMTkyZmEyYTVjNjciLCJqdGkiOiI2NGZhYzNhZGRiZTQ4Zjg2OGQ0ODUzZWU4ZjAyMWE4ZGY1MGFlZGY5ZGJlNWI3OGE5NjY4NjQ1N2I5YzMxY2VhYzViODI3ZDg1OGRiYmQ4MyIsImlhdCI6MTY0NTUyNjkzNywibmJmIjoxNjQ1NTI2OTM3LCJleHAiOjE2NzcwNjI5MzcsInN1YiI6IjQzMzRhY2NiLWQyOWEtNDM0MC04YzU0LTZhZmE0NDE3ODVlZSIsInNjb3BlcyI6W119.Xetl9nT3ygNlHVDYwCeD0rSltRRPsIZY8IQQSnyeT5exqgRBqkhW94KcDB9mk0a1I9omtk43MrhxvSSMCsyVzAkAOeLMg8MQsoyDuaqtYirNloCFgIRJ5SCtkrRYGj4UDHlWTeoUpW0ikAdYth7A8zUqpHouybQEELARcPluSpCXCDTnaYemt0cFFTW5Bc-yCZRYqNperb1PEMEgVPzvKg6n3z2Uvehq3afgm-isRMPDXkdQny6_nlF82u-lzyscAREDE95jFf6AdlmqWOXcxJiPIaqQsRnWw9L2oJrANpHQO2hmRetrz0oAWTSxN9vvQAKV0Mz6PYDy-8dWD6kcPQq7Vfp9ut_Gcrhs7IdAQ66b0HRCGKn9DszNwfASTFpSeOxE8UyEO39nCyTw8XdWJ1Y8LtBVleuUZQSfva3zHrRV0Q6rC4CZRJZhjVWCot5l48dcSPCoBi8c4BIs3Vk1xZbBqgnRXGEnjHor_xVWw3Ahq0BBpcfqO3WpqtYp3rOSxccgEEmZ5_1aWlJbHbxitJBtN44f9u_3g5v8_fwqoOWGl_7oFLZIz7B-iodrNE773h4S5QXK1YCMOuZJuumQV5CGWL7EFdYYb0Oh5AETTTAK1TPMTQ4OzW5jJJzzO-XFZysewk9vyJObkun7eCJ2l4m_DeiveqN3EjRqePKCdCs' }
-    };
 
     export default {
         data() {
@@ -63,25 +60,43 @@
             }
         },
         mounted() {
+            if (this.$store.state.token !== '') {
+                axios.get('http://localhost:8000/api/v1/profile', {
+                        headers: { Authorization: 'Bearer ' + this.$store.state.token }
+                    })
+                    .then((response) => {
+                        this.$store.commit('setName', response.data.data.name);
+                    }).catch((error) => {
+                    this.$store.commit('clearToken');
+                    this.$router.push({ name: 'Login' });
+                });
+            } else {
+                this.$router.push({ name: 'Login' });
+            }
             this.getNews();
-            console.log('Component mounted.')
         },
         methods: {
             getNews() {
-                axios.get('http://localhost:8000/api/v1/news', config)
+                axios.get('http://localhost:8000/api/v1/news', {
+                        headers: { Authorization: 'Bearer ' + this.$store.state.token }
+                    })
                     .then((response) => {
                         this.news = response.data.data;
                         console.log(this.news)
                     });
             },
             like(newsId) {
-                axios.post('http://localhost:8000/api/v1/news/' + newsId + '/like', [], config)
+                axios.post('http://localhost:8000/api/v1/news/' + newsId + '/like', [], {
+                        headers: { Authorization: 'Bearer ' + this.$store.state.token }
+                    })
                     .then((response) => {
                         this.getNews();
                     });
             },
             unlike(newsId) {
-                axios.post('http://localhost:8000/api/v1/news/' + newsId + '/unlike', [], config)
+                axios.post('http://localhost:8000/api/v1/news/' + newsId + '/unlike', [], {
+                        headers: { Authorization: 'Bearer ' + this.$store.state.token }
+                    })
                     .then((response) => {
                         this.getNews();
                     });
@@ -89,7 +104,9 @@
             postComment(e) {
                 let comment = e.target.comment.value;
                 let newsId = e.target.news.value;
-                axios.post('http://localhost:8000/api/v1/news/' + newsId + '/comments', {'body': comment}, config)
+                axios.post('http://localhost:8000/api/v1/news/' + newsId + '/comments', {'body': comment}, {
+                        headers: { Authorization: 'Bearer ' + this.$store.state.token }
+                    })
                     .then((response) => {
                         this.getNews();
                         e.target.comment.value = '';

@@ -19,16 +19,40 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('profile', require('./components/Profile.vue').default);
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-let routes = [
-    { path: '/news', component:require('./components/NewsComponent.vue').default }
-];
+import Register from './components/Register';
+import Login from './components/Login';
+import Logout from './components/Logout';
+import News from './components/News';
+import { store } from './store/store';
 
-const router = new VueRouter({ mode: 'history', routes });
+const router = new VueRouter({
+    linkActiveClass: 'active',
+    mode: 'history',
+    routes: [
+        {
+            path: '/register',
+            name: 'Register',
+            component: Register
+        }, {
+            path: '/login',
+            name: 'Login',
+            component: Login
+        }, {
+            path: '/logout',
+            name: 'Logout',
+            component: Logout
+        }, {
+            path: '/news',
+            name: 'News',
+            component: News
+        },
+    ]
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -38,5 +62,6 @@ const router = new VueRouter({ mode: 'history', routes });
 
 const app = new Vue({
     el: '#app',
+    store,
     router
 });
