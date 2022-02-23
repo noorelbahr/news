@@ -51,10 +51,13 @@ class CategoryController extends ApiController
 
     /**
      * @param CategorySubmitRequest $request
-     * @return CategoryResource
+     * @return CategoryResource|\Illuminate\Http\JsonResponse
      */
     public function store(CategorySubmitRequest $request)
     {
+        if (Auth::user()->role !== 'admin')
+            return $this->fail('Forbidden!');
+
         $category = $this->categoryRepository->create(
             $request->name,
             $request->slug,
@@ -71,6 +74,9 @@ class CategoryController extends ApiController
      */
     public function update(CategorySubmitRequest $request, $id)
     {
+        if (Auth::user()->role !== 'admin')
+            return $this->fail('Forbidden!');
+
         $this->categoryRepository->findOrFail($id);
 
         $this->categoryRepository->update(
@@ -89,6 +95,9 @@ class CategoryController extends ApiController
      */
     public function destroy($id)
     {
+        if (Auth::user()->role !== 'admin')
+            return $this->fail('Forbidden!');
+
         $category = $this->categoryRepository->findOrFail($id);
         $category->delete();
 
