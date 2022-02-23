@@ -27,4 +27,14 @@ trait DateAccessorTrait
     {
         return $updateAt ? Carbon::parse($updateAt)->format('Y-m-d H:i:s') : null;
     }
+
+    /**
+     * Human readable created at accessor.
+     * - - -
+     * @return string
+     */
+    public function getHrCreatedAtAttribute()
+    {
+        return $this->created_at ? Carbon::parse($this->created_at)->diffForHumans() : null;
+    }
 }

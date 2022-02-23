@@ -5278,6 +5278,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -5330,25 +5332,58 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+var config = {
+  headers: {
+    Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NWE4ZTg2Yy1kNmJkLTQ3YmQtOTg2OS1mMTkyZmEyYTVjNjciLCJqdGkiOiI2NGZhYzNhZGRiZTQ4Zjg2OGQ0ODUzZWU4ZjAyMWE4ZGY1MGFlZGY5ZGJlNWI3OGE5NjY4NjQ1N2I5YzMxY2VhYzViODI3ZDg1OGRiYmQ4MyIsImlhdCI6MTY0NTUyNjkzNywibmJmIjoxNjQ1NTI2OTM3LCJleHAiOjE2NzcwNjI5MzcsInN1YiI6IjQzMzRhY2NiLWQyOWEtNDM0MC04YzU0LTZhZmE0NDE3ODVlZSIsInNjb3BlcyI6W119.Xetl9nT3ygNlHVDYwCeD0rSltRRPsIZY8IQQSnyeT5exqgRBqkhW94KcDB9mk0a1I9omtk43MrhxvSSMCsyVzAkAOeLMg8MQsoyDuaqtYirNloCFgIRJ5SCtkrRYGj4UDHlWTeoUpW0ikAdYth7A8zUqpHouybQEELARcPluSpCXCDTnaYemt0cFFTW5Bc-yCZRYqNperb1PEMEgVPzvKg6n3z2Uvehq3afgm-isRMPDXkdQny6_nlF82u-lzyscAREDE95jFf6AdlmqWOXcxJiPIaqQsRnWw9L2oJrANpHQO2hmRetrz0oAWTSxN9vvQAKV0Mz6PYDy-8dWD6kcPQq7Vfp9ut_Gcrhs7IdAQ66b0HRCGKn9DszNwfASTFpSeOxE8UyEO39nCyTw8XdWJ1Y8LtBVleuUZQSfva3zHrRV0Q6rC4CZRJZhjVWCot5l48dcSPCoBi8c4BIs3Vk1xZbBqgnRXGEnjHor_xVWw3Ahq0BBpcfqO3WpqtYp3rOSxccgEEmZ5_1aWlJbHbxitJBtN44f9u_3g5v8_fwqoOWGl_7oFLZIz7B-iodrNE773h4S5QXK1YCMOuZJuumQV5CGWL7EFdYYb0Oh5AETTTAK1TPMTQ4OzW5jJJzzO-XFZysewk9vyJObkun7eCJ2l4m_DeiveqN3EjRqePKCdCs'
+  }
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      news: []
+    };
+  },
   mounted: function mounted() {
+    this.getNews();
     console.log('Component mounted.');
+  },
+  methods: {
+    getNews: function getNews() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://localhost:8000/api/v1/news', config).then(function (response) {
+        _this.news = response.data.data;
+        console.log(_this.news);
+      });
+    },
+    like: function like(newsId) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/api/v1/news/' + newsId + '/like', [], config).then(function (response) {
+        _this2.getNews();
+      });
+    },
+    unlike: function unlike(newsId) {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/api/v1/news/' + newsId + '/unlike', [], config).then(function (response) {
+        _this3.getNews();
+      });
+    },
+    postComment: function postComment(e) {
+      var _this4 = this;
+
+      var comment = e.target.comment.value;
+      var newsId = e.target.news.value;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/api/v1/news/' + newsId + '/comments', {
+        'body': comment
+      }, config).then(function (response) {
+        _this4.getNews();
+
+        e.target.comment.value = '';
+      });
+    }
   }
 });
 
@@ -38869,17 +38904,13 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-6" }, [
-          _c("div", { staticClass: "card card-widget" }, [
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        _vm._l(_vm.news, function (n) {
+          return _c("div", { staticClass: "card card-widget" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("div", { staticClass: "user-block" }, [
                 _c("img", {
@@ -38889,129 +38920,153 @@ var staticRenderFns = [
                 _vm._v(" "),
                 _c("span", { staticClass: "username" }, [
                   _c("a", { attrs: { href: "#" } }, [
-                    _vm._v("Jonathan Burke Jr."),
+                    _vm._v(_vm._s(n.author.name)),
                   ]),
                 ]),
                 _vm._v(" "),
                 _c("span", { staticClass: "description" }, [
-                  _vm._v("Shared publicly - 7:30 PM Today"),
+                  _vm._v(_vm._s(n.hr_created_at)),
                 ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-tools" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-tool",
-                    attrs: { type: "button", title: "Mark as read" },
-                  },
-                  [_c("i", { staticClass: "far fa-circle" })]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-tool",
-                    attrs: { type: "button", "data-card-widget": "collapse" },
-                  },
-                  [_c("i", { staticClass: "fas fa-minus" })]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-tool",
-                    attrs: { type: "button", "data-card-widget": "remove" },
-                  },
-                  [_c("i", { staticClass: "fas fa-times" })]
-                ),
               ]),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
-              _c("img", {
-                staticClass: "img-fluid pad",
-                attrs: { src: "/user.png", alt: "Photo" },
-              }),
+              n.images.length
+                ? _c("img", {
+                    staticClass: "img-fluid pad mb-2",
+                    attrs: { src: n.images[0].image_url, alt: "Photo" },
+                  })
+                : _vm._e(),
               _vm._v(" "),
-              _c("p", [
-                _vm._v(
-                  "I took this photo this morning. What do you guys think?"
-                ),
-              ]),
+              _c("h5", [_vm._v(_vm._s(n.title))]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default btn-sm",
-                  attrs: { type: "button" },
-                },
-                [_c("i", { staticClass: "fas fa-share" }), _vm._v(" Share")]
-              ),
+              _c("p", [_vm._v(_vm._s(n.body))]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default btn-sm",
-                  attrs: { type: "button" },
-                },
-                [_c("i", { staticClass: "far fa-thumbs-up" }), _vm._v(" Like")]
-              ),
+              n.is_liked
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default btn-sm text-primary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          $event.preventDefault()
+                          return _vm.unlike(n.id)
+                        },
+                      },
+                    },
+                    [
+                      _c("i", { staticClass: "fa-solid fa-thumbs-up" }),
+                      _vm._v(" Like"),
+                    ]
+                  )
+                : _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          $event.preventDefault()
+                          return _vm.like(n.id)
+                        },
+                      },
+                    },
+                    [
+                      _c("i", { staticClass: "fa-solid fa-thumbs-up" }),
+                      _vm._v(" Like"),
+                    ]
+                  ),
               _vm._v(" "),
               _c("span", { staticClass: "float-right text-muted" }, [
-                _vm._v("127 likes - 3 comments"),
+                _vm._v(
+                  _vm._s(n.like_count) +
+                    " likes - " +
+                    _vm._s(n.comment_count) +
+                    " comments"
+                ),
               ]),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card-footer card-comments" }, [
-              _c("div", { staticClass: "card-comment" }, [
-                _c("img", {
-                  staticClass: "img-circle img-sm",
-                  attrs: { src: "/user.png", alt: "User Image" },
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "comment-text" }, [
-                  _c("span", { staticClass: "username" }, [
-                    _vm._v(
-                      "\n                            Maria Gonzales\n                            "
-                    ),
-                    _c("span", { staticClass: "text-muted float-right" }, [
-                      _vm._v("8:03 PM Today"),
-                    ]),
+            n.comment_count
+              ? _c(
+                  "div",
+                  { staticClass: "card-footer card-comments" },
+                  _vm._l(n.comments.slice().reverse(), function (comment) {
+                    return _c("div", { staticClass: "card-comment" }, [
+                      _c("img", {
+                        staticClass: "img-circle img-sm",
+                        attrs: { src: "/user.png", alt: "User Image" },
+                      }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-text" }, [
+                        _c("span", { staticClass: "username" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(comment.user.name) +
+                              "\n                                "
+                          ),
+                          _c(
+                            "span",
+                            { staticClass: "text-muted float-right" },
+                            [_vm._v(_vm._s(comment.hr_created_at))]
+                          ),
+                        ]),
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(comment.body) +
+                            "\n                        "
+                        ),
+                      ]),
+                    ])
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.postComment.apply(null, arguments)
+                    },
+                  },
+                },
+                [
+                  _c("img", {
+                    staticClass: "img-fluid img-circle img-sm",
+                    attrs: { src: "/user.png", alt: "Alt Text" },
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "img-push" }, [
+                    _c("input", {
+                      attrs: { type: "hidden", name: "news" },
+                      domProps: { value: n.id },
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control form-control-sm",
+                      attrs: {
+                        type: "text",
+                        name: "comment",
+                        placeholder: "Press enter to post comment",
+                      },
+                    }),
                   ]),
-                  _vm._v(
-                    "\n                            It is a long established fact that a reader will be distracted\n                            by the readable content of a page when looking at its layout.\n                        "
-                  ),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-comment" }, [
-                _c("img", {
-                  staticClass: "img-circle img-sm",
-                  attrs: { src: "/user.png", alt: "User Image" },
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "comment-text" }, [
-                  _c("span", { staticClass: "username" }, [
-                    _vm._v(
-                      "\n                            Luna Stark\n                            "
-                    ),
-                    _c("span", { staticClass: "text-muted float-right" }, [
-                      _vm._v("8:03 PM Today"),
-                    ]),
-                  ]),
-                  _vm._v(
-                    "\n                            It is a long established fact that a reader will be distracted\n                            by the readable content of a page when looking at its layout.\n                        "
-                  ),
-                ]),
-              ]),
+                ]
+              ),
             ]),
-          ]),
-        ]),
-      ]),
-    ])
-  },
-]
+          ])
+        }),
+        0
+      ),
+    ]),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -54415,6 +54470,18 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

@@ -22,6 +22,7 @@ class CommentResource extends JsonResource
             'id'            => $this->id,
             'body'          => $this->body,
             'created_at'    => $this->created_at,
+            'hr_created_at' => $this->hr_created_at,
             'user'          => new UserResource($this->user),
         ];
     }
