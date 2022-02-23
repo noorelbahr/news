@@ -1,64 +1,95 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# News API with Laravel and Vue JS #
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Getting Started
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-## About Laravel
+### Set up Laravel project
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Clone the project and navigate to the project root directory
+```
+cd ~/full/path/to/news-app
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Here we assume that our `Apache` and `MySQL` server are running.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+Copy `.env.example` file to `.env`
+```
+cp .env.example .env
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Install dependencies
+```
+composer install
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+php artisan key:generate
 
-## Laravel Sponsors
+npm install && npm run dev
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Then, we have to migrate our migration files to create our tables and seed default data for `user` and `categories`
+(in `database/migrations` and `database/seeds`)
 
-### Premium Partners
+Don't forget to create new database named `news_app`, we will use it as our database in this project as mentioned in our `.env` file (`DB_DATABASE=news_app`).
+```
+php artisan migrate && php artisan db:seed
+```
+It will creates a default user for us, `Admin`. Use this credential for managing `categories` data from api.
+```
+Admin -> John Doe
+username: admin@gmail.com
+password: john123
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+##### Install Laravel Passport
+Run command below to install passport
+```
+php artisan passport:install --uuids
+```
+It will generates 2 clients for us
+```
+Personal access client created successfully.
+Client ID: 95a8e86c-d6bd-47bd-9869-f192fa2a5c67
+Client secret: bo72cMzHsoXcIU5sTIYIZzD0qlfSa6VYJf8J5KYk
+Password grant client created successfully.
+Client ID: 95a8e86c-deda-4010-9c94-9289acd404f6
+Client secret: 6UzPDESm8pQ4o474cKh6MPFLLBK0LgfiB3rLjjSu
+```
+And then, update our `.env` file with the generated Personal Access Client ID and Secret.
+```
+PASSPORT_PERSONAL_ACCESS_CLIENT_ID=
+PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=
+```
 
-## Contributing
+##### Create Symlink for Storage Public Folder
+```
+php artisan storage:link
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+##### Run Our Project
+Run command below to serve our project locally, we are going to use `port 8080`
+```
+php artisan serve --port=8080
+```
+Now we can access our project with url http://localhost:8080
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## Testing Our API
+To test our API, click button bellow : 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f3aad0d72d0be88279c1?action=collection%2Fimport#?env%5BNewsApp%5D=W3sia2V5IjoiYmFzZVVSTCIsInZhbHVlIjoiaHR0cDovL2xvY2FsaG9zdDo4MDAwIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJ0b2tlbiIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX1d)
 
-## License
+##### or
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+If it's failed to run from the link above, you can import it manually via `Import From Link` tab in Import window :
+```
+Collection link :
+
+https://www.getpostman.com/collections/f3aad0d72d0be88279c1
+```
+
+You can import the Postman Environment file in the project directory (`NewsApp.postman_environment.json`).
+
+- - -
