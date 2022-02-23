@@ -28,7 +28,7 @@ class NewsRepository implements NewsRepositoryInterface
      */
     public function getPaginated($limit)
     {
-        return $this->model->simplePaginate($limit);
+        return $this->model->latest()->simplePaginate($limit);
     }
 
     /**

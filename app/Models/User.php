@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\DateAccessorTrait;
 use App\Traits\UuidModelTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
+    use DateAccessorTrait;
     use UuidModelTrait;
 
     /**

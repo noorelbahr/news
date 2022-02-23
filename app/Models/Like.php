@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\SoftDeletesTrait;
+use App\Traits\DateAccessorTrait;
 use App\Traits\UuidModelTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Like extends Model
 {
-    use SoftDeletes;
-    use SoftDeletesTrait;
+    use DateAccessorTrait;
     use UuidModelTrait;
 
     /**
@@ -23,6 +21,14 @@ class Like extends Model
         'created_by',
         'updated_by',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo

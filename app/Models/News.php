@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use App\Traits\SoftDeletesTrait;
+use App\Traits\DateAccessorTrait;
 use App\Traits\UuidModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class News extends Model
 {
     use SoftDeletes;
-    use SoftDeletesTrait;
+    use DateAccessorTrait;
     use UuidModelTrait;
 
     protected $table = 'news';
@@ -29,6 +30,24 @@ class News extends Model
         'created_by',
         'updated_by',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted() {
+        parent::booted();
+
+        self::deleting(function($model) {
+            $model->deleted_by = Auth::id();
+            $model->save();
+
+            foreach ($model->images as $image) { $image->delete(); }
+            foreach ($model->comments as $comment) { $comment->delete(); }
+            foreach ($model->likes as $like) { $like->delete(); }
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

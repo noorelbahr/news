@@ -91,8 +91,12 @@ class NewsController extends ApiController
     public function update(NewsSubmitRequest $request, $id)
     {
         DB::beginTransaction();
+        $news = $this->newsRepository->findOrFail($id);
+
         try {
-            $news = $this->newsRepository->findOrFail($id);
+            if ($news->user_id !== Auth::id()) {
+                throw new \Exception('You\'re not the author!');
+            }
 
             $this->newsRepository->update(
                 $id,
@@ -127,12 +131,9 @@ class NewsController extends ApiController
     {
         $news = $this->newsRepository->findOrFail($id);
         if ($news->user_id !== Auth::id()) {
-            return $this->fail('You\'re not the owner!');
+            return $this->fail('You\'re not the author!');
         }
 
-        $news->images()->delete();
-        $news->comments()->delete();
-        $news->likes()->delete();
         $news->delete();
 
         return $this->success('The news deleted successfully.', Response::HTTP_NO_CONTENT);

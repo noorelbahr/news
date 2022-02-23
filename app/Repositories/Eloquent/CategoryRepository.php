@@ -36,7 +36,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function getPaginated($limit)
     {
-        return $this->model->simplePaginate($limit);
+        return $this->model->latest()->simplePaginate($limit);
     }
 
     /**

@@ -3,9 +3,8 @@
 namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class NewsSubmitRequest extends FormRequest
+class NewsCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +24,7 @@ class NewsSubmitRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => [
-                'required',
-                Rule::exists('categories', 'id')->whereNull('deleted_at')
-            ],
-            'title' => 'required',
-            'body' => 'nullable|string',
-            'tags' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
+            'body' => 'required|string',
         ];
     }
 }

@@ -18,10 +18,8 @@ class CreateLikesTable extends Migration
             $table->uuidMorphs('likable');
             $table->uuid('user_id')->index();
             $table->timestamps();
-            $table->softDeletes();
             $table->uuid('created_by')->nullable();
             $table->uuid('updated_by')->nullable();
-            $table->uuid('deleted_by')->nullable();
         });
     }
 

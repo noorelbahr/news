@@ -27,8 +27,10 @@ class NewsResource extends JsonResource
             'updated_at'    => $this->updated_at,
             'created_by'    => $this->created_by,
             'updated_by'    => $this->updated_by,
+            'comment_count' => $this->comments()->count(),
+            'like_count'    => $this->likes()->count(),
             'category'      => new CategoryResource($this->category),
-            'images'        => ImageResource::collection($this->images)
+            'images'        => ImageResource::collection($this->images),
         ];
     }
 }

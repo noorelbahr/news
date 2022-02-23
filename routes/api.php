@@ -22,10 +22,23 @@ Route::prefix('v1')->namespace('V1')->group(function () {
     Route::post('login', 'AuthController@login');
 
     Route::middleware('auth:api')->group(function () {
+        // Profile
+        Route::get('profile', 'ProfileController@index');
+
         // Categories
         Route::apiResource('categories', 'CategoryController');
 
         // News
         Route::apiResource('news', 'NewsController');
+
+        // Comments
+        Route::get('news/{news}/comments', 'NewsCommentController@index');
+        Route::post('news/{news}/comments', 'NewsCommentController@store');
+        Route::delete('news/{news}/comments/{id}', 'NewsCommentController@destroy');
+
+        // Likes
+        Route::get('news/{news}/likes', 'NewsLikeController@index');
+        Route::post('news/{news}/like', 'NewsLikeController@like');
+        Route::post('news/{news}/unlike', 'NewsLikeController@unlike');
     });
 });
