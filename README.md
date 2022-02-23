@@ -3,11 +3,17 @@
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+### Requirements
+
+1. Apache
+2. MySQL database
+3. Node JS
+
 ### Set up Laravel project
 
 Clone the project and navigate to the project root directory
 ```
-cd ~/full/path/to/news-app
+cd ~/full/path/to/news
 ```
 
 Here we assume that our `Apache` and `MySQL` server are running.
