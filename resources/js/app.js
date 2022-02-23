@@ -19,7 +19,8 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('profile', require('./components/Profile.vue').default);
+Vue.component('profile', require('./components/ProfileComponent.vue').default);
+Vue.component('news-create-button', require('./components/NewsCreateButtonComponent.vue').default);
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
@@ -28,6 +29,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import News from './components/News';
+import NewsCreate from './components/NewsCreate';
 import { store } from './store/store';
 
 const router = new VueRouter({
@@ -50,6 +52,10 @@ const router = new VueRouter({
             path: '/news',
             name: 'News',
             component: News
+        }, {
+            path: '/news/create',
+            name: 'NewsCreate',
+            component: NewsCreate
         },
     ]
 });

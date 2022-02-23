@@ -9,7 +9,14 @@
                                 <span class="username"><a href="#">{{n.author.name}}</a></span>
                             <span class="description">{{n.hr_created_at}}</span>
                         </div>
-
+                        <div v-if="n.is_author" class="card-tools">
+                            <button type="button" class="btn btn-tool">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button type="button" @click.prevent="removeNews(n.id)" class="btn btn-tool">
+                                <i class="fa-solid fa-trash text-danger"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
 
@@ -111,6 +118,16 @@
                         this.getNews();
                         e.target.comment.value = '';
                     });
+            },
+            removeNews(newsId) {
+                if (confirm('Are you sure?')) {
+                    axios.delete('http://localhost:8000/api/v1/news/' + newsId, {
+                            headers: { Authorization: 'Bearer ' + this.$store.state.token }
+                        })
+                        .then((response) => {
+                            this.getNews();
+                        });
+                }
             }
         }
     }

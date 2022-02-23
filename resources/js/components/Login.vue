@@ -34,7 +34,7 @@
                     </form>
 
                     <p class="mb-0">
-                        <router-link to="register" class="text-center">Register a new membership</router-link>
+                        <router-link :to="{ name: 'Register' }" class="text-center">Register a new membership</router-link>
                     </p>
                 </div>
 

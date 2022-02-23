@@ -35,7 +35,8 @@ class NewsResource extends JsonResource
             'category'      => new CategoryResource($this->category),
             'images'        => ImageResource::collection($this->images),
             'comments'      => CommentResource::collection($this->comments()->latest()->simplePaginate(3)),
-            'is_liked'      => (bool) ($this->likes()->where('user_id', Auth::id())->count() > 0)
+            'is_liked'      => (bool) ($this->likes()->where('user_id', Auth::id())->count() > 0),
+            'is_author'     => (bool) ($this->user_id === Auth::id())
         ];
     }
 }

@@ -23,13 +23,13 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item menu-open">
-                    <router-link to="news" class="nav-link">
+                    <router-link :to="{ name: 'News' }" class="nav-link">
                         <i class="nav-icon fa-solid fa-newspaper"></i>
                         <p>News</p>
                     </router-link>
                 </li>
                 <li class="nav-item menu-open">
-                    <router-link to="logout" class="nav-link">
+                    <router-link :to="{ name: 'Logout' }" class="nav-link">
                         <i class="nav-icon fa-solid fa-right-from-bracket"></i>
                         <p>Logout</p>
                     </router-link>

@@ -43,7 +43,7 @@
 
                         <button type="submit" class="btn btn-primary btn-block">Register</button>
                     </form>
-                    <router-link to="login" class="text-center">I already have an account</router-link>
+                    <router-link :to="{ name: 'Login' }" class="text-center">I already have an account</router-link>
                 </div>
 
             </div>
