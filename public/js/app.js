@@ -5645,6 +5645,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5657,9 +5683,12 @@ __webpack_require__.r(__webpack_exports__);
         category_id: '',
         title: '',
         body: '',
-        tags: ''
+        tags: '',
+        image: ''
       },
-      categories: []
+      categories: [],
+      error_msg: '',
+      errors: []
     };
   },
   mounted: function mounted() {
@@ -5707,15 +5736,29 @@ __webpack_require__.r(__webpack_exports__);
     postNews: function postNews(e) {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/api/v1/news', this.form, {
+      var formData = new FormData();
+      formData.append('category_id', this.form.category_id);
+      formData.append('title', this.form.title);
+      formData.append('body', this.form.body);
+      formData.append('tags', this.form.tags);
+      formData.append('image', this.form.image);
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://localhost:8000/api/v1/news', formData, {
         headers: {
-          Authorization: 'Bearer ' + this.$store.state.token
+          Authorization: 'Bearer ' + this.$store.state.token,
+          'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
         _this3.$router.push({
           name: 'News'
         });
+      })["catch"](function (error) {
+        _this3.error_msg = error.response.data.message;
+        if (error.response.data.errors) _this3.errors = error.response.data.errors;
+        console.log(_this3.errors);
       });
+    },
+    onChangeFile: function onChangeFile(e) {
+      this.form.image = e.target.files[0];
     }
   }
 });
@@ -47597,110 +47640,174 @@ var render = function () {
               _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "input-group mb-3" },
-                  [
-                    _c("Select2", {
-                      staticClass: "form-control",
-                      attrs: { options: _vm.categories },
-                      model: {
-                        value: _vm.form.category_id,
-                        callback: function ($$v) {
-                          _vm.$set(_vm.form, "category_id", $$v)
+                _vm.error_msg
+                  ? _c("div", { staticClass: "alert alert-danger" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.error_msg) +
+                          "\n                        "
+                      ),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "div",
+                    { staticClass: "input-group mb-3" },
+                    [
+                      _c("Select2", {
+                        staticClass: "form-control",
+                        attrs: { options: _vm.categories },
+                        model: {
+                          value: _vm.form.category_id,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "category_id", $$v)
+                          },
+                          expression: "form.category_id",
                         },
-                        expression: "form.category_id",
+                      }),
+                      _vm._v(" "),
+                      _vm._m(1),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm.errors.category_id
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.category_id[0])),
+                      ])
+                    : _vm._e(),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.title,
+                          expression: "form.title",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "Title" },
+                      domProps: { value: _vm.form.title },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "title", $event.target.value)
+                        },
                       },
                     }),
                     _vm._v(" "),
-                    _vm._m(1),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-group mb-3" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.title,
-                        expression: "form.title",
-                      },
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Title" },
-                    domProps: { value: _vm.form.title },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "title", $event.target.value)
-                      },
-                    },
-                  }),
+                    _vm._m(2),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(2),
+                  _vm.errors.title
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.title[0])),
+                      ])
+                    : _vm._e(),
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "input-group mb-3" }, [
-                  _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.body,
-                        expression: "form.body",
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "file",
+                        placeholder: "Image",
+                        accept: "image/*",
                       },
-                    ],
-                    staticClass: "form-control",
-                    attrs: { rows: "9", placeholder: "body" },
-                    domProps: { value: _vm.form.body },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "body", $event.target.value)
-                      },
-                    },
-                  }),
+                      on: { change: _vm.onChangeFile },
+                    }),
+                    _vm._v(" "),
+                    _vm._m(3),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(3),
+                  _vm.errors.image
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.image[0])),
+                      ])
+                    : _vm._e(),
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "input-group mb-3" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.tags,
-                        expression: "form.tags",
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.body,
+                          expression: "form.body",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: { rows: "9", placeholder: "body" },
+                      domProps: { value: _vm.form.body },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "body", $event.target.value)
+                        },
                       },
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Tags (comma delimited)",
-                    },
-                    domProps: { value: _vm.form.tags },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "tags", $event.target.value)
-                      },
-                    },
-                  }),
+                    }),
+                    _vm._v(" "),
+                    _vm._m(4),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(4),
+                  _vm.errors.body
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.body[0])),
+                      ])
+                    : _vm._e(),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.tags,
+                          expression: "form.tags",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Tags (comma delimited)",
+                      },
+                      domProps: { value: _vm.form.tags },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "tags", $event.target.value)
+                        },
+                      },
+                    }),
+                    _vm._v(" "),
+                    _vm._m(5),
+                  ]),
+                  _vm._v(" "),
+                  _vm.errors.tags
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.tags[0])),
+                      ])
+                    : _vm._e(),
                 ]),
               ]),
               _vm._v(" "),
-              _vm._m(5),
+              _vm._m(6),
             ]
           ),
         ]),
@@ -47734,6 +47841,16 @@ var staticRenderFns = [
     return _c("div", { staticClass: "input-group-append" }, [
       _c("div", { staticClass: "input-group-text" }, [
         _c("span", { staticClass: "fa-solid fa-heading" }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("div", { staticClass: "input-group-text" }, [
+        _c("span", { staticClass: "fa-solid fa-image" }),
       ]),
     ])
   },

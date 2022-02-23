@@ -8,37 +8,63 @@
                             <h5 class="mb-0">Create News</h5>
                         </div>
                         <div class="card-body">
-                            <div class="input-group mb-3">
-                                <Select2 v-model="form.category_id" :options="categories" class="form-control" />
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fa-solid fa-boxes-stacked"></span>
-                                    </div>
-                                </div>
+                            <div v-if="error_msg" class="alert alert-danger">
+                                {{ error_msg }}
                             </div>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Title" v-model="form.title">
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fa-solid fa-heading"></span>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <Select2 v-model="form.category_id" :options="categories" class="form-control" />
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fa-solid fa-boxes-stacked"></span>
+                                        </div>
                                     </div>
                                 </div>
+                                <span v-if="errors.category_id" class="text-danger">{{ errors.category_id[0] }}</span>
                             </div>
-                            <div class="input-group mb-3">
-                                <textarea rows="9" class="form-control" placeholder="body" v-model="form.body"></textarea>
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fa-solid fa-align-left"></span>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Title" v-model="form.title">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fa-solid fa-heading"></span>
+                                        </div>
                                     </div>
                                 </div>
+                                <span v-if="errors.title" class="text-danger">{{ errors.title[0] }}</span>
                             </div>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Tags (comma delimited)" v-model="form.tags">
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fas fa-tags"></span>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="file" class="form-control" placeholder="Image" accept="image/*" v-on:change="onChangeFile">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fa-solid fa-image"></span>
+                                        </div>
                                     </div>
                                 </div>
+                                <span v-if="errors.image" class="text-danger">{{ errors.image[0] }}</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <textarea rows="9" class="form-control" placeholder="body" v-model="form.body"></textarea>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fa-solid fa-align-left"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span v-if="errors.body" class="text-danger">{{ errors.body[0] }}</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Tags (comma delimited)" v-model="form.tags">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-tags"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span v-if="errors.tags" class="text-danger">{{ errors.tags[0] }}</span>
                             </div>
 
                         </div>
@@ -66,8 +92,11 @@
                     title: '',
                     body: '',
                     tags: '',
+                    image: ''
                 },
                 categories: [],
+                error_msg: '',
+                errors: []
             }
         },
         mounted() {
@@ -99,12 +128,31 @@
                     });
             },
             postNews(e) {
-                axios.post('http://localhost:8000/api/v1/news', this.form, {
-                        headers: { Authorization: 'Bearer ' + this.$store.state.token }
+                let formData = new FormData();
+                formData.append('category_id', this.form.category_id);
+                formData.append('title', this.form.title);
+                formData.append('body', this.form.body);
+                formData.append('tags', this.form.tags);
+                formData.append('image', this.form.image);
+                axios.post('http://localhost:8000/api/v1/news', formData, {
+                        headers: {
+                            Authorization: 'Bearer ' + this.$store.state.token,
+                            'Content-Type': 'multipart/form-data'
+                        }
                     })
                     .then((response) => {
                         this.$router.push({ name: 'News' });
+                    })
+                    .catch((error) => {
+                        this.error_msg = error.response.data.message;
+                        if (error.response.data.errors)
+                            this.errors = error.response.data.errors;
+
+                        console.log(this.errors);
                     });
+            },
+            onChangeFile(e) {
+                this.form.image = e.target.files[0];
             }
         }
     }
