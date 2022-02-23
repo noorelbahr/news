@@ -108,6 +108,8 @@ class NewsController extends ApiController
             );
 
             if ($request->hasFile('image')) {
+                $news->images()->delete();
+
                 $path = $request->file('image')->store('/images/news');
 
                 $news->images()->create(['filename' => $path, 'created_by' => Auth::id()]);

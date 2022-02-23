@@ -30,6 +30,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import News from './components/News';
 import NewsCreate from './components/NewsCreate';
+import NewsEdit from './components/NewsEdit';
 import { store } from './store/store';
 
 const router = new VueRouter({
@@ -56,6 +57,10 @@ const router = new VueRouter({
             path: '/news/create',
             name: 'NewsCreate',
             component: NewsCreate
+        }, {
+            path: '/news/:id/edit',
+            name: 'NewsEdit',
+            component: NewsEdit
         },
     ]
 });

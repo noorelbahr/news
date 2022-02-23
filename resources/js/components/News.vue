@@ -10,9 +10,9 @@
                             <span class="description">{{n.hr_created_at}}</span>
                         </div>
                         <div v-if="n.is_author" class="card-tools">
-                            <button type="button" class="btn btn-tool">
+                            <router-link :to="{ name: 'NewsEdit', params: { id: n.id } }" type="button" class="btn btn-tool">
                                 <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
+                            </router-link>
                             <button type="button" @click.prevent="removeNews(n.id)" class="btn btn-tool">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </button>
