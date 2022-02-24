@@ -7,30 +7,40 @@
             <div class="card">
                 <div class="card-body register-card-body">
                     <p class="login-box-msg">Register a new membership</p>
+                    <div v-if="error_msg" class="alert alert-danger">{{ error_msg }}</div>
                     <form @submit.prevent="register">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Full name" v-model="form.name">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-user"></span>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Full name" v-model="form.name">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-user"></span>
+                                    </div>
                                 </div>
                             </div>
+                            <span v-if="errors.name" class="text-danger">{{ errors.name[0] }}</span>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="Email" v-model="form.email">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-envelope"></span>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" placeholder="Email" v-model="form.email">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-envelope"></span>
+                                    </div>
                                 </div>
                             </div>
+                            <span v-if="errors.email" class="text-danger">{{ errors.email[0] }}</span>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="password" class="form-control" placeholder="Password" v-model="form.password">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control" placeholder="Password" v-model="form.password">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-lock"></span>
+                                    </div>
                                 </div>
                             </div>
+                            <span v-if="errors.password" class="text-danger">{{ errors.password[0] }}</span>
                         </div>
                         <div class="input-group mb-3">
                             <input type="password" class="form-control" placeholder="Retype password" v-model="form.password_confirmation">
@@ -63,6 +73,7 @@
                     password: '',
                     password_confirmation: ''
                 },
+                error_msg: '',
                 errors: []
             }
         },
@@ -88,6 +99,9 @@
                         this.$router.push({ name: 'News' });
                     }).catch((error) => {
                         console.log(error);
+                        this.error_msg = error.response.data.message;
+                        if (error.response.data.errors)
+                            this.errors = error.response.data.errors;
                     });
             }
         }

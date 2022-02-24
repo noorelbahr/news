@@ -13,7 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 Clone the project and navigate to the project root directory
 ```
-cd ~/full/path/to/news
+cd news
 ```
 
 Here we assume that our `Apache` and `MySQL` server are running.
